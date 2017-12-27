@@ -1,0 +1,23 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Inventory",
+	"Description": "A C++ inventory system",
+	"Category": "Other",
+	"CreatedBy": "vsensu",
+	"CreatedByURL": "http://vsensu.com",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "Inventory",
+			"Type": "Developer",
+			"LoadingPhase": "Default"
+		}
+	]
+}

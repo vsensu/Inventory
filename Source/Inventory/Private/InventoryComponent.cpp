@@ -19,8 +19,6 @@ UInventoryComponent::UInventoryComponent()
 	{
 		free_list_.insert(i);
 	}
-
-	UE_LOG(LogTemp, Warning, TEXT("construct Inv"));
 }
 
 
@@ -113,7 +111,6 @@ int UInventoryComponent::LoadFrom(const FInvStore &InvStore)
 		}
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Inv Loaded"));
 	return Success;
 }
 
@@ -380,21 +377,16 @@ int UInventoryComponent::SetItemInSpecificSlot(int index, int type_id, int num)
 
 FPageData UInventoryComponent::GetPageData(int Page)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Pages:%d Rows:%d Cols:%d PageSize:%d Capacity:%d"), Pages, Rows, Cols, page_size_, capacity_);
 	int start_index = PageToIndex(Page, 0, 0);
-	UE_LOG(LogTemp, Warning, TEXT("start index:%d"), start_index);
 	if (!IsIndexValid(start_index))
 		return FPageData();
 
-	UE_LOG(LogTemp, Warning, TEXT("Index Valid"));
 	FPageData page_data;
 	for (int i = start_index; i < start_index + page_size_; ++i)
 	{
 		page_data.Data.Add(slots_[i]);
 	}
 
-
-	UE_LOG(LogTemp, Warning, TEXT("Item Num:%d"), page_data.Data.Num());
 	return page_data;
 }
 

@@ -39,7 +39,7 @@ public:
 	FInvStore SaveTo() const;
 
 	UFUNCTION(BlueprintCallable)
-	int InSlot(int TypeId, int Num);
+	int InSlot(FString TypeId, int Num);
 
 	UFUNCTION(BlueprintCallable)
 	void Arrange();
@@ -48,10 +48,10 @@ public:
 	int DropItemInSpecificSlot(int index);
 
 	UFUNCTION(BlueprintCallable)
-	int DropItem(int TypeId, int Num);
+	int DropItem(FString TypeId, int Num);
 
 	UFUNCTION(BlueprintCallable)
-	int SetItemInSpecificSlot(int index, int type_id, int num);
+	int SetItemInSpecificSlot(int index, FString type_id, int num);
 
 	UFUNCTION(BlueprintCallable)
 	FPageData GetPageData(int Page);
@@ -76,7 +76,7 @@ public:
 	int MaxNumPerSlot = 64;
 
 private:
-	enum { EmptyItem = -1 };
+	//enum { EmptyItem = -1 };
 	enum { Success = 0 };
 	enum ErrorCode {
 		InvalidIndex = -1,
@@ -119,7 +119,7 @@ private:
 
 	inline bool IsSlotFree(int index) const
 	{
-		return slots_[index].TypeId == EmptyItem;
+		return slots_[index].TypeId.IsEmpty();
 	}
 
 	// not arranged
@@ -144,16 +144,16 @@ private:
 
 	void ClearAll();
 
-	int GetItemFreeSpace(int type_id) const;
+	int GetItemFreeSpace(FString type_id) const;
 
-	int GetItemFirstFreeSlot(int type_id) const;
+	int GetItemFirstFreeSlot(FString type_id) const;
 
 private:
 	FInvSlotData * slots_;
-	std::map<int, std::shared_ptr<InvItemData>> inv_items_; // typeid itemdata
+	std::map<TypeIdType, std::shared_ptr<InvItemData>> inv_items_; // typeid itemdata
 
 	using ItemNotFullSlot = std::set<int>;
-	std::map<int, std::shared_ptr<ItemNotFullSlot>> notfull_; // typeid slotindex
+	std::map<TypeIdType, std::shared_ptr<ItemNotFullSlot>> notfull_; // typeid slotindex
 
 	std::set<int> free_list_; // slotindex
 	int page_size_;

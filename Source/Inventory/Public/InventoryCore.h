@@ -7,17 +7,21 @@
 #include "InventoryCore.generated.h"
 
 
+using TypeIdType = FString; // UHT not support at current
+
 USTRUCT(BlueprintType)
 struct FInvSlotData
 {
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadWrite, Category = "Slot")
-	int TypeId;
-
+	FString TypeId;
+	
 	UPROPERTY(BlueprintReadWrite, Category = "Slot")
 	int Num;
-	FInvSlotData() :TypeId(-1), Num(0) {}
+
+	// Invalid ID default value is empty string
+	FInvSlotData() :TypeId(""), Num(0) {}
 };
 
 USTRUCT(BlueprintType)

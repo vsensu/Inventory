@@ -67,7 +67,7 @@ int UInventoryComponent::LoadFrom(const FInvStore &InvStore)
 		slots_[i].Num = inv_slot_data.Num;
 
 		// update free list
-		if (inv_slot_data.TypeId == EmptyItem)
+		if (inv_slot_data.TypeId.IsEmpty())
 		{
 			free_list_.insert(i);
 		}
@@ -128,7 +128,7 @@ FInvStore UInventoryComponent::SaveTo() const
 	return inv_store;
 }
 
-int UInventoryComponent::InSlot(int TypeId, int Num)
+int UInventoryComponent::InSlot(FString TypeId, int Num)
 {
 	int ecexceeded_num = Num;
 	while (ecexceeded_num > 0)
@@ -206,7 +206,7 @@ void UInventoryComponent::Arrange()
 	// rebuild free slot and list
 	for (int free_slot_index = slot_index; free_slot_index < capacity_; ++free_slot_index)
 	{
-		slots_[free_slot_index].TypeId = EmptyItem;
+		slots_[free_slot_index].TypeId = "";
 		slots_[free_slot_index].Num = 0;
 		free_list_.insert(free_slot_index);
 	}
@@ -224,7 +224,7 @@ int UInventoryComponent::DropItemInSpecificSlot(int index)
 
 	// find the item type
 	int num_in_slot = slots_[index].Num;
-	int type_id = slots_[index].TypeId;
+	TypeIdType type_id = slots_[index].TypeId;
 
 	// update inv item slot
 	auto item_search = inv_items_.find(type_id);
@@ -269,7 +269,7 @@ int UInventoryComponent::DropItemInSpecificSlot(int index)
 		inv_items_.erase(type_id);
 
 	// remove slot
-	slots_[index].TypeId = EmptyItem;
+	slots_[index].TypeId = "";
 	slots_[index].Num = 0;
 
 	UpdatePageData.Broadcast();
@@ -277,7 +277,7 @@ int UInventoryComponent::DropItemInSpecificSlot(int index)
 	return Success;
 }
 
-int UInventoryComponent::DropItem(int TypeId, int Num)
+int UInventoryComponent::DropItem(FString TypeId, int Num)
 {
 	// find item
 	auto item_search = inv_items_.find(TypeId);
@@ -313,7 +313,7 @@ int UInventoryComponent::DropItem(int TypeId, int Num)
 	return Success;
 }
 
-int UInventoryComponent::SetItemInSpecificSlot(int index, int type_id, int num)
+int UInventoryComponent::SetItemInSpecificSlot(int index, FString type_id, int num)
 {
 	if (!IsIndexValid(index))
 		return ErrorCode::InvalidIndex;
@@ -395,7 +395,7 @@ void UInventoryComponent::ClearAll()
 	// clear all
 	for (int i = 0; i < capacity_; ++i)
 	{
-		slots_[i].TypeId = EmptyItem;
+		slots_[i].TypeId = "";
 		slots_[i].Num = 0;
 	}
 
@@ -404,7 +404,7 @@ void UInventoryComponent::ClearAll()
 	inv_items_.clear();
 }
 
-int UInventoryComponent::GetItemFreeSpace(int type_id) const
+int UInventoryComponent::GetItemFreeSpace(FString type_id) const
 {
 	auto notfull_search = notfull_.find(type_id);
 	if (notfull_.end() == notfull_search)
@@ -419,7 +419,7 @@ int UInventoryComponent::GetItemFreeSpace(int type_id) const
 	return item_slots_free_space + GetFreeSlotsSpace();
 }
 
-int UInventoryComponent::GetItemFirstFreeSlot(int type_id) const
+int UInventoryComponent::GetItemFirstFreeSlot(FString type_id) const
 {
 	// first find in not full
 	auto notfull_search = notfull_.find(type_id);

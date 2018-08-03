@@ -5,20 +5,11 @@
 
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
-	:slots_(nullptr),
-	page_size_(Rows*Cols),
-	capacity_(Pages*Rows*Cols)
+	:slots_(nullptr)
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
-
-	// ...
-	slots_ = new FInvSlotData[capacity_];
-	for (int i = 0; i < capacity_; ++i)
-	{
-		free_list_.insert(i);
-	}
 }
 
 
@@ -27,8 +18,13 @@ void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	page_size_ = Rows * Cols;
+	capacity_ = Pages * Rows * Cols;
+	slots_ = new FInvSlotData[capacity_];
+	for (int i = 0; i < capacity_; ++i)
+	{
+		free_list_.insert(i);
+	}
 }
 
 

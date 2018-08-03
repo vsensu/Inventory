@@ -63,16 +63,16 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FUpdatePageData UpdatePageData;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Inventory")
 	int Pages = 3;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Inventory")
 	int Rows = 8;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Inventory")
 	int Cols = 8;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Inventory")
 	int MaxNumPerSlot = 64;
 
 private:
